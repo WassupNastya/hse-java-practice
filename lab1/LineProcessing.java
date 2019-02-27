@@ -17,11 +17,9 @@ public class LineProcessing {
             this.setFields();
         }
         catch (NullPointerException e) {
-            //throw e;
             throw new InvalidLineException();
         }
         catch (NumberFormatException e) {
-           // throw e;
             throw new InvalidLineException();
         }
     }

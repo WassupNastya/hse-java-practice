@@ -20,14 +20,14 @@ public class ReadingFromFile {
                     LineProcessing ln = new LineProcessing(strLine);
                     fileWriter.write(ln.toString() + '\n');
                 }
-                    bufferedReader.close();
-                    fileStream.close();
-                    fileWriter.close();
-                }
-                catch (InvalidLineException e) { System.out.println("Error in input data in line " + countStrings); }
-                //catch (NullPointerException e) { System.out.println("Error in input data in line " + countStrings); }
-                //catch (NumberFormatException e){ System.out.println("Error in input data in line " + countStrings); }
+            }
+            catch (InvalidLineException e) { System.out.println("Error in input data in line " + countStrings); }
+            finally {
+                bufferedReader.close();
+                fileStream.close();
+                fileWriter.close();
+            }
         }
-        catch (IOException e){ System.out.println("Cannot read from file"); }
+        catch (IOException e) { System.out.println("File Error"); }
     }
 }
