@@ -1,5 +1,5 @@
 # hse-java-practice
-java labs for practice at the university
+<em>java labs for practice at the university</em>
 
 ### lab1
 Input data: Surname, name,patronymic and date of birth.<br>
