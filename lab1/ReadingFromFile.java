@@ -18,6 +18,7 @@ public class ReadingFromFile {
                 while ((strLine = bufferedReader.readLine()) != null) {
                     countStrings++;
                     LineProcessing ln = new LineProcessing(strLine);
+                    ln.setInformation();
                     fileWriter.write(ln.toString() + '\n');
                 }
             }

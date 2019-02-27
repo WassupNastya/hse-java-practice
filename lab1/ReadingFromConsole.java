@@ -17,6 +17,7 @@ public class ReadingFromConsole {
                     if (!string.equals("exit")) {
                         countStrings++;
                         LineProcessing ln = new LineProcessing(string);
+                        ln.setInformation();
                         fileWriter.write(ln.toString() + '\n');
                     }
                 } while (!string.equals("exit"));

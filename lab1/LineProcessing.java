@@ -11,8 +11,11 @@ public class LineProcessing {
     private String gender;
     private int age;
 
-    public LineProcessing(String string) throws InvalidLineException {
+    public LineProcessing(String string) {
         this.string = string;
+    }
+
+    public void setInformation() throws InvalidLineException {
         try {
             this.setFields();
         }
