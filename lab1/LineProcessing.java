@@ -1,5 +1,6 @@
 package lessons.lesson3;
-import java.util.Calendar;
+
+import java.time.LocalDate;
 import java.util.regex.Pattern;
 
 public class LineProcessing {
@@ -11,23 +12,15 @@ public class LineProcessing {
     private String gender;
     private int age;
 
-    public LineProcessing(String string) {
-        this.string = string;
+    @Override
+    public String toString() {
+        return this.surname + " " + this.name.charAt(0) + ". " + this.patronymic.charAt(0) +
+                ". " + this.gender + " " + this.age;
     }
 
-    public void setInformation() throws InvalidLineException {
-        try {
-            this.setFields();
-        }
-        catch (NullPointerException e) {
-            throw new InvalidLineException();
-        }
-        catch (NumberFormatException e) {
-            throw new InvalidLineException();
-        }
-    }
+    public LineProcessing(String string) { this.string = string; }
 
-    private String[] separateString() {
+    public void processLine() throws InvalidLineException {
         String[] tmp = new String[4];
         int counter = 0;
 
@@ -35,22 +28,22 @@ public class LineProcessing {
             tmp[counter] = data;
             counter++;
         }
-        return tmp;
-    }
 
-    private void setFields() throws NullPointerException {
-        String[] tmp = separateString();
         try {
-            this.surname = tmp[0];
-            this.name = tmp[1];
-            this.patronymic = tmp[2];
-            this.date = tmp[3];
+            surname = tmp[0].toLowerCase();
+            name = tmp[1].toLowerCase();
+            patronymic = tmp[2].toLowerCase();
+            date = tmp[3];
+
+            surname = Character.toUpperCase(surname.charAt(0)) + surname.substring(1);
+            name = Character.toUpperCase(name.charAt(0)) + name.substring(1);
+            patronymic = Character.toUpperCase(patronymic.charAt(0)) + patronymic.substring(1);
 
             setGender();
             setAge();
         }
         catch (NullPointerException e) {
-            throw e;
+            throw new InvalidLineException("Error in surname, name or patronymic");
         }
     }
 
@@ -60,44 +53,28 @@ public class LineProcessing {
         else gender = "не определен";
     }
 
-    private void setAge() throws NullPointerException, NumberFormatException {
+    private void setAge() throws InvalidLineException {
         String[] tmp = new String[3];
         int counter = 0;
+
         for (String data : this.date.split(Pattern.quote("."))) {
             tmp[counter] = data;
             counter++;
         }
 
+        LocalDate date;
+        LocalDate now = LocalDate.now();
+
         try {
-            String d = tmp[0];
-            String m = tmp[1];
-            String y = tmp[2];
-
-            try {
-                int day = Integer.parseInt(d);
-                int month = Integer.parseInt(m);
-                int year = Integer.parseInt(y);
-                Calendar rightNow = Calendar.getInstance();
-                Calendar receivedDate = Calendar.getInstance();
-                receivedDate.set(year, month, day);
-
-                if (rightNow.after(receivedDate)) age = rightNow.getWeekYear() - year - 1;
-                else age = rightNow.getWeekYear() - year;
-
-                if (age < 0) throw new NumberFormatException();
-            } catch (NumberFormatException e) {
-                throw e;
-            }
-        } catch (NullPointerException e) {
-            throw e;
-        } catch (NumberFormatException e) {
-            throw e;
+            date = LocalDate.of(Integer.parseInt(tmp[2]), Integer.parseInt(tmp[1]), Integer.parseInt(tmp[0]));
         }
-    }
+        catch (Exception e) { throw new InvalidLineException("Error in date of birth"); }
 
-    @Override
-    public String toString() {
-        return this.surname + " " + this.name.charAt(0) + ". " + this.patronymic.charAt(0) +
-                ". " + this.gender + " " + this.age;
-    }
+
+        if (date.getDayOfYear() < now.getDayOfYear()) { age = now.getYear() - date.getYear() - 1; }
+        else { age = now.getYear() - date.getYear();}
+
+        if (age < 0) throw new InvalidLineException("Age cannot be lower 0");
+        }
+
 }

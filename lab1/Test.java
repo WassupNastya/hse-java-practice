@@ -1,36 +1,28 @@
 package lessons.lesson3;
 
-import java.io.*;
+import java.io.FileWriter;
+import java.io.IOException;
 import java.util.Scanner;
 
 public class Test {
-    public static void main(String[] args) throws IOException {
+    public static void main(String[] args) {
+        System.out.println("Input surname, name, patronymic and date of birth (dd.mm.yyyy)");
+
         Scanner in = new Scanner(System.in);
-        System.out.print("Enter f to read from file or c to write in console: ");
-        String input = in.nextLine();
+        String string;
 
         try {
             FileWriter fileWriter = new FileWriter("listID.txt");
-            switch(input) {
-                case "f":
-                   ReadingFromFile rff = new ReadingFromFile();
-                   rff.readFromFile(fileWriter);
-                   break;
-                case "c":
-                    ReadingFromConsole rfc = new ReadingFromConsole();
-                    rfc.readFromConsole(fileWriter);
-                    break;
+            try {
+                string = in.nextLine();
+                LineProcessing ln = new LineProcessing(string);
+                ln.processLine();
+                fileWriter.write(ln.toString() + '\n');
 
-                default:
-                    fileWriter.close();
-                    throw new InvalidInputDataException();
             }
+            catch (InvalidLineException e) { System.out.println("Invalid input data: " + e.getMessage()); }
+            finally { fileWriter.close(); }
         }
-        catch (FileNotFoundException e) {
-            System.out.println("Cannot open file to write");
-        }
-        catch (InvalidInputDataException e) {
-           System.out.println("Invalid key!");
-        }
+        catch(IOException e) {System.out.println("Error to write in file"); }
     }
 }
