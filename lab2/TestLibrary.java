@@ -9,7 +9,7 @@ public class TestLibrary {
 
         Scanner in = new Scanner(System.in);
         int choice = 0;
-        while (choice != 8) {
+        while (choice != 9) {
             System.out.println("\nLibrary");
             System.out.println("1. Add book");
             System.out.println("2. Delete book");
@@ -18,11 +18,12 @@ public class TestLibrary {
             System.out.println("5. Serialize Library into file");
             System.out.println("6. Serialize Library from file");
             System.out.println("7. Show all items in library");
-            System.out.println("8. Exit");
+            System.out.println("8. Write to file");
+            System.out.println("9. Exit");
             System.out.println("Enter a number: ");
             try {
                 choice = Integer.parseInt(in.nextLine());
-                if ((choice < 1) || (choice > 8)) throw new NumberFormatException();
+                if ((choice < 1) || (choice > 9)) throw new NumberFormatException();
 
                 switch (choice) {
                     case 1:
@@ -45,6 +46,9 @@ public class TestLibrary {
                         break;
                     case 7:
                         MenuLibrary.showAll(library);
+                        break;
+                    case 8:
+                        MenuLibrary.writeToFile(library);
                         break;
                 }
             }

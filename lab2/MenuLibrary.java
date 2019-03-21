@@ -103,4 +103,13 @@ public class MenuLibrary  {
     public static void showAll(Library library) {
         System.out.println(library.toString());
     }
+
+    public static void writeToFile(Library library) {
+        try (FileWriter fileWriter = new FileWriter("LibraryDatabase.txt")) {
+            fileWriter.write(library.toString());
+        }
+        catch (IOException e) {
+            System.out.println("Error to write into file");
+        }
+    }
 }
